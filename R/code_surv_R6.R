@@ -44,11 +44,11 @@ survRadiomics$set('public', 'figure',
                     {
                     cv.fit <- self$cv.fit
                     fit <- self$fit
-                    pptx <- read_pptx(path = outName)
+                    pptx <- read_pptx()
                     pptx <- add_slide(pptx)
 
                     p.lasso <- dml(code = {
-                      oldpar <- par(mfrow = c(2, 1))
+                      oldpar <- par(mfrow = c(1, 2))
                       plot(cv.fit)
                       plot(fit, s = cv.fit$lambda.min, xvar = 'lambda')
                       abline(v = log(cv.fit$lambda.min), lty = 2)
@@ -75,12 +75,11 @@ survRadiomics$set('public', 'figure',
                     p.bar <- dml(ggobj = {
                       ggbarplot(data = dt.coef, x = 'Variable', y = 'Coefficients',
                                 width = 0.4, fill = 'blue') +
-                        coord_flip() + theme_bw() + theme(axis.title = element_text(size = 20),
-                                                          axis.text = element_text(size = 20))
+                        coord_flip() + theme_bw()
                     })
                     ph_with(pptx, value = p.bar, location = ph_location_type(type = 'body'))
 
-                    print(pptx)
+                    print(pptx, outName)
                   })
 survRadiomics$set('public', 'predict',
                   function(dt.radiomics, dt.clinics)
