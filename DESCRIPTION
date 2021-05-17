@@ -16,6 +16,14 @@ RoxygenNote: 7.1.1
 URL: https://github.com/yzhizai/doSurvival
 BugReports: https://github.com/yzhizai/doSurvival/issues
 Depends: 
+    caret,
     ggpubr,
+    glmnet,
+    officer,
+    Publish,
+    R6,
     rms,
-    survminer
+    rvg,
+    survival,
+    survminer,
+    tidyverse

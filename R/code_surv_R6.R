@@ -1,12 +1,3 @@
-library(R6)
-library(tidyverse)
-library(Publish)
-library(caret)
-library(survival)
-library(glmnet)
-library(officer)
-library(rvg)
-
 outSurv <- R6Class('outSurv', list(
   Time = NULL,
   Event = NULL,
