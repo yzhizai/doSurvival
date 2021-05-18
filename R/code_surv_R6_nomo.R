@@ -122,36 +122,6 @@ survNomogram$set('public', 'predict',
 
 outSurv_nomo <- R6Class(classname = 'outSurv_nomo',
                         inherit = outSurv,
-                        public = list(regTable = NULL,
-                                      threshold = NULL))
-outSurv_nomo$set('public', 'kmplot',
-                 function(outName)
-                   {
-                   dt <- tibble(Time = self$Time,
-                                Event = self$Event,
-                                Score = self$Score)
-                   if(is.null(self$threshold))
-                   {
-                     cuts <- surv_cutpoint(dt, time = 'Time', event = 'Event',
-                                           variables = 'Score')
+                        public = list(regTable = NULL
+                                      ))
 
-                     cuts <- cuts$cutpoint$cutpoint
-                     self$threshold <- cuts
-                   }
-
-
-                   dt$Score <- ifelse(dt$Score < self$threshold, 0, 1)
-                   # KM PFS plot Radscore--------------------------------------------------------------
-
-                   survfit.i <- survfit(Surv(Time, Event)~Score, data = dt)
-
-                   survplot.i <- ggsurvplot(survfit.i, data = dt, pval = T)
-
-                   p.surv <- dml(ggobj = {survplot.i$plot})
-                   pptx <- read_pptx()
-                   pptx <- add_slide(pptx)
-                   ph_with(pptx, value = p.surv,
-                           location = ph_location_type(typte = 'body'))
-
-                   print(pptx, outName)
-                 })

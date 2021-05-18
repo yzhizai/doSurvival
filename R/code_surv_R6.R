@@ -1,14 +1,65 @@
+#' The R6 object of survival analysis
+#' @description
+#' The output of the survival analysis
 outSurv <- R6Class('outSurv', list(
   Time = NULL,
   Event = NULL,
   Score = NULL,
+  threshold = NULL,
+  cindex = NULL,
   toDf = function()
   {
     tibble(Time = self$Time,
            Event = self$Event,
            Score = self$Score)
+  },
+#' @description
+#' the method to plot km curve
+#' @param outName  The output pptx name
+#'
+#' @return
+  kmplot = function(outName)
+  {
+    dt <- tibble(Time = self$Time,
+                 Event = self$Event,
+                 Score = self$Score)
+    if(is.null(self$threshold))
+    {
+      cuts <- surv_cutpoint(dt, time = 'Time', event = 'Event',
+                            variables = 'Score')
+
+      cuts <- cuts$cutpoint$cutpoint
+      self$threshold <- cuts
+    }
+
+
+    dt$Score <- ifelse(dt$Score < self$threshold, 0, 1)
+    # KM PFS plot Radscore--------------------------------------------------------------
+
+    survfit.i <- survfit(Surv(Time, Event)~Score, data = dt)
+
+    survplot.i <- ggsurvplot(survfit.i, data = dt, pval = T)
+
+    p.surv <- dml(ggobj = {survplot.i$plot})
+    pptx <- read_pptx()
+    pptx <- add_slide(pptx)
+    ph_with(pptx, value = p.surv,
+            location = ph_location_type(typte = 'body'))
+
+    print(pptx, outName)
+  },
+#' @description The method to calculate the c-index
+#' @return NULL
+  cidx_calc = function()
+  {
+    dt <- tibble(Time = self$Time,
+                 Event = self$Event,
+                 Score = self$Score)
+    cox.fit <- coxph(Surv(Time, Event)~Score, data = dt)
+    self$cindex <- cox.fit$concordance
   }
 ))
+
 
 #' R6 Class Representing a survival radiomics model
 #'
