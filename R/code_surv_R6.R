@@ -10,6 +10,13 @@ outSurv <- R6Class('outSurv', list(
   }
 ))
 
+#' R6 Class Representing a survival radiomics model
+#'
+#' @description
+#' radiomics-based survival model
+#'
+#' @details
+#' Nothing
 survRadiomics <- R6Class('survRadiomics',
                          list(time = NULL,
                               event = NULL))
@@ -31,6 +38,7 @@ survRadiomics$set('public', 'initialize',
                     invisible(self)
                   })
 survRadiomics$set('public', 'figure',
+
                   function(outName)
                     {
                     cv.fit <- self$cv.fit
