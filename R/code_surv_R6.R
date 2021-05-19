@@ -1,6 +1,7 @@
 #' The R6 object of survival analysis
 #' @description
 #' The output of the survival analysis
+#' @export
 outSurv <- R6Class('outSurv', list(
   Time = NULL,
   Event = NULL,
@@ -68,6 +69,7 @@ outSurv <- R6Class('outSurv', list(
 #'
 #' @details
 #' Nothing
+#' @export
 survRadiomics <- R6Class('survRadiomics',
                          list(time = NULL,
                               event = NULL))

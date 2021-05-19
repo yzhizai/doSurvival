@@ -1,3 +1,7 @@
+#' The survival nomogram R6 class
+#' @description
+#' create a R6 class for survival nomogram analysis
+#' @export
 survNomogram <- R6Class(classname = 'survNomogram',
                         list(time = NULL,
                              event = NULL,
@@ -120,6 +124,8 @@ survNomogram$set('public', 'predict',
                    out
                  })
 
+#' The output of predict of survNomogram
+#' @export
 outSurv_nomo <- R6Class(classname = 'outSurv_nomo',
                         inherit = outSurv,
                         public = list(regTable = NULL
